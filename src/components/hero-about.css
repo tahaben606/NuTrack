@@ -1,0 +1,65 @@
+/* About Us container */
+.about-us-container {
+    padding: 40px 20px;
+    text-align: center;
+    background-color: #f9f9f9;
+    /* Light background color */
+    color: #404045;
+   
+    /* Text color */
+}
+
+/* About Us heading */
+.about-us-container h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #333;
+    /* Darker color for the main heading */
+    text-transform: uppercase;
+
+    /* Uppercase text */
+}
+.about{
+font-family: Sacramento-Regular;;    
+}
+/* About Us content */
+.about-us-content {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.about-us-content h1 {
+    font-size: 28px;
+    margin-bottom: 15px;
+    color: #404045;
+    /* Text color */
+}
+
+.about-us-content p {
+    margin-bottom: 20px;
+}
+
+.about-us-content strong {
+    color: #007bff;
+}
+
+/* Hero image */
+.hero-image {
+    max-width: 100%;
+    /* Ensure the image is responsive */
+    height: auto;
+    /* Maintain aspect ratio */
+    margin-top: 20px;
+    /* Add some space above the image */
+    border-radius: 10px;
+    /* Optional: Add rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Optional: Add a subtle shadow */
+}
+@font-face {
+    src: url(../fonts/LeagueScript-Regular.ttf);
+    font-family: Sacramento-Regular;
+    
+}
