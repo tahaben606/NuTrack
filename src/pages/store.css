@@ -1,0 +1,123 @@
+/* store.css */
+
+body {
+    background-color: white;
+    /* Set the background color of the entire page */
+    margin: 0;
+    /* Remove default margin */
+    padding: 0;
+    /* Remove default padding */
+}
+
+.store-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: white;
+    /* Ensure the container has a white background */
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.ingredients-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.ingredient-tag {
+    background-color: #e0e0e0;
+    padding: 5px 10px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.ingredient-tag button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    font-size: 14px;
+}
+
+.recipe-item {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    /* Required for absolute positioning of match and rating */
+}
+
+.recipe-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+.recipe-details {
+    flex: 1;
+}
+
+.recipe-details h2 {
+    margin: 0 0 10px 0;
+}
+
+.recipe-details p {
+    margin: 0 0 5px 0;
+    color: #555;
+}
+
+.recipe-description {
+    color: #777;
+    margin: 0 0 10px 0;
+}
+
+.match-percentage {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    border-radius: 15px;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.recipe-rating {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: #333;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Default view styles */
+.default-view {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.default-view h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.default-image {
+    width: 300px;
+    height: auto;
+    border-radius: 10px;
+}

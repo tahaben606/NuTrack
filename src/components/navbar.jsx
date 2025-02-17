@@ -7,14 +7,14 @@ const Navbar = () => {
         <nav className="navbar">
             <div className="nav-container">
                 <ul className="nav-links">
-                    <li><a to="/">Home</a></li>
-                    <li><a to="/about">About Us</a></li>
-                    <li><a to="/contact">Contact Us</a></li>
+                    <li><Link to="/">Home</Link></li>
+                    <li><Link to="/about">About Us</Link></li>
+                    <li><Link to="/contact">Contact Us</Link></li>
+                    <li><Link to="/store">Store</Link></li>
                 </ul>
                 <div className="nav-icons">
                    <button className="contact-btn">CONTACT US</button> 
                 </div>
-                
             </div>
         </nav>
     );
