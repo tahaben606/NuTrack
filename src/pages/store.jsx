@@ -2,39 +2,12 @@ import React, { useState } from 'react';
 import './store.css'; // Import the CSS file
 import sonic from '../assets/sonic.png'; // Import the image
 import Mjid from '../assets/mjid.jpg';
+import recipes from './recipedata'; // Import the recipes data
 
 const Store = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedIngredients, setSelectedIngredients] = useState([]);
-    const [recipes, setRecipes] = useState([
-        { 
-            id: 1, 
-            name: 'Pasta', 
-            chef: 'Chef John', 
-            description: 'Delicious pasta with tomato sauce.', 
-            ingredients: ['tomato', 'pasta', 'basil'], 
-            image: 'https://images.unsplash.com/photo-1595295333158-4742f28fbd85?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80', 
-            rating: 5 
-        },
-        { 
-            id: 2, 
-            name: 'Pizza', 
-            chef: 'Chef Maria', 
-            description: 'Classic Margherita pizza.', 
-            ingredients: ['tomato', 'cheese', 'basil'], 
-            image: 'https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80', 
-            rating: 4 
-        },
-        { 
-            id: 3, 
-            name: 'Burger', 
-            chef: 'Chef Alex', 
-            description: 'Juicy beef burger with fresh veggies.', 
-            ingredients: ['beef', 'lettuce', 'tomato', 'cheese'], 
-            image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80', 
-            rating: 4.5 
-        },
-    ]);
+    const [errorMessage, setErrorMessage] = useState(''); // State for error messages
 
     // Extract all unique ingredients from recipes
     const allIngredients = [...new Set(recipes.flatMap(recipe => recipe.ingredients))];
@@ -46,15 +19,26 @@ const Store = () => {
 
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
+        setErrorMessage(''); // Clear error message when typing
     };
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter' && searchTerm.trim() !== '') {
             const ingredient = searchTerm.trim().toLowerCase();
+
+            // Check if the ingredient exists in the allIngredients list
+            if (!allIngredients.includes(ingredient)) {
+                setErrorMessage(`"${ingredient}" is not a valid ingredient.`);
+                return; // Stop further execution
+            }
+
+            // Add the ingredient if it's not already selected
             if (!selectedIngredients.includes(ingredient)) {
                 setSelectedIngredients([...selectedIngredients, ingredient]);
             }
+
             setSearchTerm('');
+            setErrorMessage(''); // Clear error message after successful addition
         }
     };
 
@@ -63,6 +47,7 @@ const Store = () => {
             setSelectedIngredients([...selectedIngredients, ingredient]);
         }
         setSearchTerm('');
+        setErrorMessage(''); // Clear error message after successful addition
     };
 
     const removeIngredient = (ingredient) => {
@@ -78,7 +63,7 @@ const Store = () => {
 
     const getMatchColor = (percentage) => {
         if (percentage === 100) return 'blue';
-        if (percentage > 80) return 'green';
+        if (percentage >= 80) return 'green';
         if (percentage > 60) return 'orange';
         return 'tomato';
     };
@@ -105,6 +90,14 @@ const Store = () => {
                     className="search-input"
                 />
             </button>
+
+            {/* Display error message if any */}
+            {errorMessage && (
+                <div className="error-message">
+                    {errorMessage}
+                </div>
+            )}
+
             {searchTerm && (
                 <div className="ingredients-dropdown">
                     {filteredIngredients.map((ingredient, index) => (
@@ -118,6 +111,7 @@ const Store = () => {
                     ))}
                 </div>
             )}
+
             <div className="ingredients-container">
                 {selectedIngredients.map((ingredient, index) => (
                     <div key={index} className="ingredient-tag">
@@ -177,6 +171,27 @@ const Store = () => {
                                 </div>
                                 <div className="recipe-rating">
                                     Rating: {'★'.repeat(Math.floor(recipe.rating))}{'☆'.repeat(5 - Math.floor(recipe.rating))}
+                                </div>
+                                {/* Display Ingredients */}
+                                <div className="recipe-ingredients">
+                                    <h3>Ingredients:</h3>
+                                    <ul>
+                                        {recipe.ingredients.map((ingredient, index) => (
+                                            <li
+                                                key={index}
+                                                className={
+                                                    selectedIngredients.includes(ingredient.toLowerCase())
+                                                        ? 'ingredient-selected'
+                                                        : 'ingredient-not-selected'
+                                                }
+                                            >
+                                                {ingredient}
+                                                {selectedIngredients.includes(ingredient.toLowerCase()) && (
+                                                    <span className="underline"></span>
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
                             </div>
                         </div>
