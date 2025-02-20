@@ -259,7 +259,17 @@ const recipes = [
         ingredients: ['matcha powder', 'milk', 'honey', 'vanilla extract'], 
         image: 'https://images.unsplash.com/photo-1623341214825-9f4f963727da?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80', 
         rating: 4.4 
+    },
+    { 
+        id: 30, 
+        name: 'bid u maticha', 
+        chef: 'Chef lamin yamal', 
+        description: 'ahsan bid u maticha.', 
+        ingredients: ['egg','tomato'], 
+        image: 'https://images.unsplash.com/photo-1623341214825-9f4f963727da?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80', 
+        rating: 4.4 
     }
+
 ];
 
 export default recipes;

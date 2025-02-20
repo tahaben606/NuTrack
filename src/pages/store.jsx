@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import './store.css'; // Import the CSS file
-import sonic from '../assets/sonic.png'; // Import the image
+import './store.css'; 
+import sonic from '../assets/sonic.png';
 import Mjid from '../assets/mjid.jpg';
-import recipes from './recipedata'; // Import the recipes data
+import recipes from './recipedata';
 
 const Store = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedIngredients, setSelectedIngredients] = useState([]);
-    const [errorMessage, setErrorMessage] = useState(''); // State for error messages
+    const [errorMessage, setErrorMessage] = useState('');
 
     // Extract all unique ingredients from recipes
     const allIngredients = [...new Set(recipes.flatMap(recipe => recipe.ingredients))];
 
-    // Filter ingredients based on search term
+    // Filter ingredients based on the search term
     const filteredIngredients = allIngredients.filter(ingredient =>
         ingredient.toLowerCase().startsWith(searchTerm.toLowerCase())
     );
@@ -34,6 +34,9 @@ const Store = () => {
 
             // Add the ingredient if it's not already selected
             if (!selectedIngredients.includes(ingredient)) {
+                setSelectedIngredients([...selectedIngredients, ingredient]);
+            }
+            if (!selectedIngredients.includes('mjid')) {
                 setSelectedIngredients([...selectedIngredients, ingredient]);
             }
 
@@ -169,9 +172,7 @@ const Store = () => {
                                 >
                                     Match: {recipe.matchPercentage.toFixed(0)}%
                                 </div>
-                                <div className="recipe-rating">
-                                    Rating: {'★'.repeat(Math.floor(recipe.rating))}{'☆'.repeat(5 - Math.floor(recipe.rating))}
-                                </div>
+                                
                                 {/* Display Ingredients */}
                                 <div className="recipe-ingredients">
                                     <h3>Ingredients:</h3>
@@ -192,6 +193,9 @@ const Store = () => {
                                             </li>
                                         ))}
                                     </ul>
+                                </div>
+                                <div className="recipe-rating">
+                                    Rating: {'★'.repeat(Math.floor(recipe.rating))}{'☆'.repeat(5 - Math.floor(recipe.rating))}
                                 </div>
                             </div>
                         </div>

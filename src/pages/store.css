@@ -130,10 +130,11 @@ body {
 
 .recipe-rating {
     position: absolute;
-    bottom: 10px;
+    bottom: 0px;
     right: 10px;
     color: #333;
     font-weight: bold;
+    /* margin: 20px; */
     font-size: 14px;
 }
 
@@ -159,6 +160,7 @@ body {
     align-items: center;
     gap: 5px;
     position: relative;
+    /* margin: 30px; */
 }
 
 .ingredient-selected {
