@@ -8,6 +8,8 @@ const Store = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedIngredients, setSelectedIngredients] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
+    const [filterType, setFilterType] = useState(''); // 'calories', 'time', or 'quantity'
+    const [sortOrder, setSortOrder] = useState(''); // 'up' or 'down'
 
     // Extract all unique ingredients from recipes
     const allIngredients = [...new Set(recipes.flatMap(recipe => recipe.ingredients))];
@@ -26,22 +28,25 @@ const Store = () => {
         if (event.key === 'Enter' && searchTerm.trim() !== '') {
             const ingredient = searchTerm.trim().toLowerCase();
 
-            // Check if the ingredient exists in the allIngredients list
-            if (!allIngredients.includes(ingredient)) {
-                setErrorMessage(`"${ingredient}" is not a valid ingredient.`);
-                return; // Stop further execution
-            }
+            if (ingredient === 'mjid') {
+                if (!selectedIngredients.includes('mjid')) {
+                    setSelectedIngredients([...selectedIngredients, 'mjid']);
+                }
+            } else {
+                // Check if the ingredient exists in the list
+                if (!allIngredients.includes(ingredient)) {
+                    setErrorMessage(`"${ingredient}" is not a valid ingredient.`);
+                    return;
+                }
 
-            // Add the ingredient if it's not already selected
-            if (!selectedIngredients.includes(ingredient)) {
-                setSelectedIngredients([...selectedIngredients, ingredient]);
-            }
-            if (!selectedIngredients.includes('mjid')) {
-                setSelectedIngredients([...selectedIngredients, ingredient]);
+                // Add the ingredient if it's not already selected
+                if (!selectedIngredients.includes(ingredient)) {
+                    setSelectedIngredients([...selectedIngredients, ingredient]);
+                }
             }
 
             setSearchTerm('');
-            setErrorMessage(''); // Clear error message after successful addition
+            setErrorMessage('');
         }
     };
 
@@ -57,6 +62,7 @@ const Store = () => {
         setSelectedIngredients(selectedIngredients.filter(item => item !== ingredient));
     };
 
+    // Match function (unchanged)
     const getMatchPercentage = (recipeIngredients) => {
         if (selectedIngredients.length === 0) return 0;
         const normalizedRecipeIngredients = recipeIngredients.map(ingredient => ingredient.trim().toLowerCase());
@@ -74,15 +80,63 @@ const Store = () => {
     // Function to check if "mjid" is in the list
     const showMjidText = selectedIngredients.includes('mjid');
 
-    const filteredRecipes = selectedIngredients.length > 0
-        ? recipes.map(recipe => {
+    // Filter and sort recipes
+    const filteredRecipes = recipes
+        .map(recipe => {
             const matchPercentage = getMatchPercentage(recipe.ingredients);
             return { ...recipe, matchPercentage };
-        }).filter(recipe => recipe.matchPercentage > 0).sort((a, b) => b.matchPercentage - a.matchPercentage)
-        : [];
+        })
+        .filter(recipe => selectedIngredients.length === 0 || recipe.matchPercentage > 0)
+        .sort((a, b) => {
+            if (filterType === 'calories') {
+                // Sort by calories
+                return sortOrder === 'up' ? a.calories - b.calories : b.calories - a.calories;
+            } else if (filterType === 'time') {
+                // Sort by time
+                const timeA = parseInt(a.timeToComplete);
+                const timeB = parseInt(b.timeToComplete);
+                return sortOrder === 'up' ? timeA - timeB : timeB - timeA;
+            } else if (filterType === 'quantity') {
+                // Sort by number of ingredients
+                const quantityA = a.ingredients.length;
+                const quantityB = b.ingredients.length;
+                return sortOrder === 'up' ? quantityA - quantityB : quantityB - quantityA;
+            } else {
+                // Default: Sort by match percentage (highest first)
+                return b.matchPercentage - a.matchPercentage;
+            }
+        });
 
     return (
         <div className="store-container">
+            {/* Filter Controls (Top-Right) */}
+            <div className="filter-controls">
+                <select
+                    value={filterType}
+                    onChange={(e) => setFilterType(e.target.value)}
+                    className="filter-dropdown"
+                >
+                    <option value="">Filter by</option>
+                    <option value="calories">Calories</option>
+                    <option value="time">Time</option>
+                    <option value="quantity">Quantity</option>
+                </select>
+
+                <button
+                    className={`sort-button ${sortOrder === 'up' ? 'active' : ''}`}
+                    onClick={() => setSortOrder('up')}
+                >
+                    ↑
+                </button>
+                <button
+                    className={`sort-button ${sortOrder === 'down' ? 'active' : ''}`}
+                    onClick={() => setSortOrder('down')}
+                >
+                    ↓
+                </button>
+            </div>
+
+            {/* Rest of the content */}
             <button className="search-button">
                 <input
                     type="text"
@@ -94,13 +148,14 @@ const Store = () => {
                 />
             </button>
 
-            {/* Display error message if any */}
+            {/* Error Message */}
             {errorMessage && (
                 <div className="error-message">
                     {errorMessage}
                 </div>
             )}
 
+            {/* Ingredients Dropdown */}
             {searchTerm && (
                 <div className="ingredients-dropdown">
                     {filteredIngredients.map((ingredient, index) => (
@@ -115,6 +170,7 @@ const Store = () => {
                 </div>
             )}
 
+            {/* Selected Ingredients */}
             <div className="ingredients-container">
                 {selectedIngredients.map((ingredient, index) => (
                     <div key={index} className="ingredient-tag">
@@ -124,7 +180,7 @@ const Store = () => {
                 ))}
             </div>
 
-            {/* Display "yes" only when "mjid" is entered */}
+            {/* Mjid Burger (Special Case) */}
             {showMjidText && (
                 <div className='mjid'>
                     <div className="recipe-item">
@@ -144,6 +200,7 @@ const Store = () => {
                 </div>
             )}
 
+            {/* Recipe List */}
             <div>
                 {selectedIngredients.length === 0 ? (
                     <div className="default-view">
@@ -166,6 +223,13 @@ const Store = () => {
                                 <h2>{recipe.name}</h2>
                                 <p>Chef: {recipe.chef}</p>
                                 <p className="recipe-description">{recipe.description}</p>
+                                
+                                {/* Display Calories and Time */}
+                                <div className="recipe-info">
+                                    <p><strong>Calories:</strong> {recipe.calories} kcal</p>
+                                    <p><strong>Time:</strong> {recipe.timeToComplete}</p>
+                                </div>
+
                                 <div 
                                     className="match-percentage"
                                     style={{ backgroundColor: getMatchColor(recipe.matchPercentage) }}
