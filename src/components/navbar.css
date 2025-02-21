@@ -1,3 +1,10 @@
+/* 7ydo ila b4iti */
+body{
+    background-color: linear-gradient(120deg, #556B2F, #838383);
+
+
+
+}
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -5,6 +12,10 @@
     padding: 10px 20px;
     background: white;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #556B2F;
+    width: 98%;
+
+
 }
 
 .nav-container {
@@ -21,7 +32,7 @@
 
 .nav-links li a {
     text-decoration: none;
-    color: black;
+    color: rgb(255, 255, 255);
     font-weight: bold;
 }
 
@@ -32,10 +43,11 @@
 }
 
 .contact-btn {
-    background: #556B2F;
+    background: #5b880d;
     color: white;
     padding: 8px 16px;
     border: none;
     cursor: pointer;
     margin-left: 20px;
+    border-radius: 50px;
 }
