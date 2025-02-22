@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link for navigation
 import './store.css'; // Import the CSS file
 import sonic from '../assets/sonic.png';
 import Mjid from '../assets/mjid.jpg';
@@ -64,10 +65,10 @@ const Store = () => {
   };
 
   const getMatchColor = (percentage) => {
-    if (percentage === 100) return 'blue';
-    if (percentage >= 80) return 'green';
-    if (percentage > 60) return 'orange';
-    return 'tomato';
+    if (percentage === 100) return '#92C7CF';
+    if (percentage >= 80) return '#95D2B3';
+    if (percentage > 60) return '#F39E60';
+    return '#FF8080';
   };
 
   const showMjidText = selectedIngredients.includes('mjid');
@@ -95,7 +96,7 @@ const Store = () => {
     });
 
   return (
-    <div >
+    <div>
       <div className="input-group">
         <label className="input-group__label" htmlFor="searchInput">Add Ingredients</label>
         <input
@@ -164,47 +165,49 @@ const Store = () => {
           </div>
         ) : (
           filteredRecipes.map(recipe => (
-            <div key={recipe.id} className="recipe-item">
-              <img src={recipe.image} alt={recipe.name} className="recipe-image" />
-              <div className="recipe-details">
-                <h2>{recipe.name}</h2>
-                <p>Chef: {recipe.chef}</p>
-                <p className="recipe-description">{recipe.description}</p>
-                <div className="recipe-info">
-                  <p><strong>Calories:</strong> {recipe.calories} kcal</p>
-                  <p><strong>Time:</strong> {recipe.timeToComplete}</p>
-                </div>
-                <div
-                  className="match-percentage"
-                  style={{ backgroundColor: getMatchColor(recipe.matchPercentage) }}
-                >
-                  Match: {recipe.matchPercentage.toFixed(0)}%
-                </div>
-                <div className="recipe-ingredients">
-                  <h3>Ingredients:</h3>
-                  <ul>
-                    {recipe.ingredients.map((ingredient, index) => (
-                      <li
-                        key={index}
-                        className={
-                          selectedIngredients.includes(ingredient.toLowerCase())
-                            ? 'ingredient-selected'
-                            : 'ingredient-not-selected'
-                        }
-                      >
-                        {ingredient}
-                        {selectedIngredients.includes(ingredient.toLowerCase()) && (
-                          <span className="underline"></span>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="recipe-rating">
-                  Rating: {'★'.repeat(Math.floor(recipe.rating))}{'☆'.repeat(5 - Math.floor(recipe.rating))}
+            <Link to={`/recipe/${recipe.id}`} key={recipe.id} className="recipe-item-link">
+              <div className="recipe-item">
+                <img src={recipe.image} alt={recipe.name} className="recipe-image" />
+                <div className="recipe-details">
+                  <h2>{recipe.name}</h2>
+                  <p>Chef: {recipe.chef}</p>
+                  <p className="recipe-description">{recipe.description}</p>
+                  <div className="recipe-info">
+                    <p><strong>Calories:</strong> {recipe.calories} kcal</p>
+                    <p><strong>Time:</strong> {recipe.timeToComplete}</p>
+                  </div>
+                  <div
+                    className="match-percentage"
+                    style={{ backgroundColor: getMatchColor(recipe.matchPercentage) }}
+                  >
+                    Match: {recipe.matchPercentage.toFixed(0)}%
+                  </div>
+                  <div className="recipe-ingredients">
+                    <h3>Ingredients:</h3>
+                    <ul>
+                      {recipe.ingredients.map((ingredient, index) => (
+                        <li
+                          key={index}
+                          className={
+                            selectedIngredients.includes(ingredient.toLowerCase())
+                              ? 'ingredient-selected'
+                              : 'ingredient-not-selected'
+                          }
+                        >
+                          {ingredient}
+                          {selectedIngredients.includes(ingredient.toLowerCase()) && (
+                            <span className="underline"></span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="recipe-rating">
+                    Rating: {'★'.repeat(Math.floor(recipe.rating))}{'☆'.repeat(5 - Math.floor(recipe.rating))}
+                  </div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))
         )}
       </div>

@@ -1,0 +1,74 @@
+/* Add unique styling for the recipe details */
+.recipe-details-weird-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgb(0, 0, 0);
+}
+
+.recipe-details-weird-container h1 {
+    font-size: 2rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.recipe-details-weird-container .recipe-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.recipe-details-weird-container .return-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #5d2851;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.recipe-details-weird-container .return-button:hover {
+    background-color: rgb(43, 29, 59);
+    transition: 0.5ms ease-in;
+}
+/* Corrected class name and styling */
+.top-form {
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 20px;
+    
+}
+
+
+.return-button:hover {
+    background-color: #0056b3;
+}
+
+.name{
+    padding-left: 20%;
+}
+.img {
+    display: flex;
+    justify-content: center;
+    /* Centers the image horizontally */
+    align-items: center;
+    /* Centers the image vertically */
+    height: 100%;
+    /* Ensures that the container takes full height */
+    width: 100%;
+    /* Ensures the container takes full width */
+}
+
+.recipe-image {
+    max-width: 100%;
+    /* Ensures the image doesn't overflow */
+    height: auto;
+    /* Maintains aspect ratio */
+}

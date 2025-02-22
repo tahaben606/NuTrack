@@ -49,7 +49,7 @@
 .ingredient-tag {
     display: flex;
     align-items: center;
-    background: #007bff;
+    background: #5F7A61;
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
@@ -299,4 +299,9 @@
     /* Remove max-height and overflow-y */
     max-height: none;
     overflow-y: visible;
+}
+.recipe-item-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
 }

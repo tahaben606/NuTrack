@@ -359,18 +359,24 @@ const recipes = [
         image: 'https://www.thedeliciouscrescent.com/wp-content/uploads/2016/01/Moroccan-Eggs-in-Tomato-Sauce-2.jpg', 
         rating: 4.4 
     },
-    { 
-        id: 31, 
-        name: 'ma3karona bichamil', 
-        chef: 'Chef lina', 
-        description: 'Ahsan ma3karona.', 
-        ingredients: ['pasta', 'cream cheese','cheese'], 
-        quantities: ['300g', '1/2 cup'], 
-        calories: 200, 
-        timeToComplete: '20 minutes', 
-        image: 'https://images.unsplash.com/photo-1702827761984-205e57a3a633?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTB8fHBhc3RhJTIwd2hpdGUlMjBjcmVhbXxlbnwwfHwwfHx8MA%3D%3D', 
-        rating: 4.4 
-    }
+    {
+    id: 31, // Ensure this matches the URL parameter
+    name: 'ma3karona bichamil',
+    chef: 'Chef dahirajr',
+    description: 'Ahsan ma3karona.',
+    ingredients: ['pasta', 'cream cheese', 'cheese'],
+    quantities: ['300g', '1/2 cup'],
+    calories: 200,
+    timeToComplete: '20 minutes',
+    image: 'https://images.unsplash.com/photo-1702827761984-205e57a3a633?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTB8fHBhc3RhJTIwd2hpdGUlMjBjcmVhbXxlbnwwfHwwfHx8MA%3D%3D',
+    rating: 4.4,
+    steps: [
+      'Boil the pasta in salted water until al dente. Drain and set aside.',
+      'In a pan, heat the cream cheese and add grated cheese. Stir until melted and smooth.',
+      'Add the cooked pasta to the cheese sauce and mix well.',
+      'Serve hot and enjoy your delicious ma3karona bichamil!',
+    ],
+  },
 ];
 
 export default recipes;

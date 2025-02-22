@@ -12,7 +12,7 @@ body{
     padding: 10px 20px;
     background: white;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    background-color: #556B2F;
+    background-color: #12372A;
     width: 98%;
 
 
@@ -43,7 +43,7 @@ body{
 }
 
 .contact-btn {
-    background: #5b880d;
+    background: #556B2F;
     color: white;
     padding: 8px 16px;
     border: none;
