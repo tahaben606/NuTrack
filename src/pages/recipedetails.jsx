@@ -71,8 +71,22 @@ const RecipeDetails = () => {
           ? '★'.repeat(Math.floor(recipe.rating)) + '☆'.repeat(5 - Math.floor(recipe.rating))
           : 'Rating is missing'}
       </p>
-
-
+      <h3>Recipe Video:</h3>
+      {/* Video Section */}
+      {recipe.video && (
+        <div className="video-container">
+          
+          <iframe
+            width="560"
+            height="315"
+            src={recipe.video.replace("watch?v=", "embed/")}
+            title="Recipe Video"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </div>
+      )}
     </div>
   );
 };
