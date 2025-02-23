@@ -72,3 +72,10 @@
     height: auto;
     /* Maintains aspect ratio */
 }
+.video-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
