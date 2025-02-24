@@ -275,7 +275,7 @@
     width: 97.5%;
     padding: 0.8em 1em;
     border: 0.25em solid transparent;
-    background-image: linear-gradient(120deg,#b2c1a2, #657a41, #556B2F);
+    background-image: linear-gradient(120deg, #657a41,#556B2F,#b2c1a2);
     background-origin: border-box;
     background-clip: padding-box, border-box;
     border-radius: 1.8em;
