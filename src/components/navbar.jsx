@@ -8,12 +8,14 @@ const Navbar = () => {
             <div className="nav-container">
                 <ul className="nav-links">
                     <li><Link to="/">Home</Link></li>
+                    <li><Link to="/store">Store</Link></li>
                     <li><Link to="/about">About Us</Link></li>
                     <li><Link to="/contact">Contact Us</Link></li>
-                    <li><Link to="/store">Store</Link></li>
+                    
                 </ul>
                 <div className="nav-icons">
-                   <button className="contact-btn">CONTACT US</button> 
+                    <Link to="/login"><i className="fas fa-user"></i>
+                   <button className="contact-btn">LOGIN</button> </Link>
                 </div>
             </div>
         </nav>
