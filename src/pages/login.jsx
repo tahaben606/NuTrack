@@ -12,41 +12,39 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md bg-white p-8 shadow-lg rounded-xl">
-        <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700">Email</label>
+    <div className="container-login">
+      <div className="login-box-login">
+        <h2 className="login-title-login">Login</h2>
+        <form className="login-form-login" onSubmit={handleSubmit}>
+          <div className="input-group-login">
+            <label htmlFor="email" className="label-text-login">Email</label>
             <input
+              id="email"
               type="email"
-              className="w-full p-2 border rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="input-field-login"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">Password</label>
+          <div className="input-group-login">
+            <label htmlFor="password" className="label-text-login">Password</label>
             <input
+              id="password"
               type="password"
-              className="w-full p-2 border rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="input-field-login"
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
-          <div className="mb-4 text-right">
-            <a href="#" className="text-blue-500 text-sm">Forgot password?</a>
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition"
-          >
-            Login
-          </button>
+          <a href="#"  className="forgot-link-login">
+            Forgot password?
+          </a>
+          <a href="signup"  className="forgot-link-login">sign up</a>
+          <button type="submit" className="login-button-login">Login</button>
         </form>
       </div>
     </div>
