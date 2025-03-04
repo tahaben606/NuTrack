@@ -40,9 +40,7 @@ export default function LoginPage() {
               required
             />
           </div>
-          <a href="#"  className="forgot-link-login">
-            Forgot password?
-          </a>
+          
           <a href="signup"  className="forgot-link-login">sign up</a>
           <button type="submit" className="login-button-login">Login</button>
         </form>
