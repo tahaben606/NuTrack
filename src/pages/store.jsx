@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import './store.css'; // Import the CSS file
-import sonic from '../assets/sonic.png';
 import Mjid from '../assets/mjid.jpg';
 import recipes from './recipedata';
 
@@ -97,6 +96,7 @@ const Store = () => {
 
   return (
     <div>
+      {/* Search Input */}
       <div className="input-group">
         <label className="input-group__label" htmlFor="searchInput">Add Ingredients</label>
         <input
@@ -160,55 +160,96 @@ const Store = () => {
       <div>
         {selectedIngredients.length === 0 ? (
           <div className="default-view">
-            <h1>Hmmm, what's in the fridge?</h1>
-            <img src={sonic} alt="What's in the fridge?" className="default-image" />
+            <h1>what's in the fridge?</h1>
+            {/* <img src={sonic} alt="What's in the fridge?" className="default-image" /> */}
           </div>
         ) : (
-          filteredRecipes.map(recipe => (
-            <Link to={`/recipe/${recipe.id}`} key={recipe.id} className="recipe-item-link">
-              <div className="recipe-item">
-                <img src={recipe.image} alt={recipe.name} className="recipe-image" />
-                <div className="recipe-details">
-                  <h2>{recipe.name}</h2>
-                  <p>Chef: {recipe.chef}</p>
-                  <p className="recipe-description">{recipe.description}</p>
-                  <div className="recipe-info">
-                    <p><strong>Calories:</strong> {recipe.calories} kcal</p>
-                    <p><strong>Time:</strong> {recipe.timeToComplete}</p>
-                  </div>
-                  <div
-                    className="match-percentage"
-                    style={{ backgroundColor: getMatchColor(recipe.matchPercentage) }}
-                  >
-                    Match: {recipe.matchPercentage.toFixed(0)}%
-                  </div>
-                  <div className="recipe-ingredients">
-                    <h3>Ingredients:</h3>
-                    <ul>
-                      {recipe.ingredients.map((ingredient, index) => (
-                        <li
-                          key={index}
-                          className={
-                            selectedIngredients.includes(ingredient.toLowerCase())
-                              ? 'ingredient-selected'
-                              : 'ingredient-not-selected'
-                          }
-                        >
-                          {ingredient}
-                          {selectedIngredients.includes(ingredient.toLowerCase()) && (
-                            <span className="underline"></span>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="recipe-rating">
-                    Rating: {'★'.repeat(Math.floor(recipe.rating))}{'☆'.repeat(5 - Math.floor(recipe.rating))}
+          <>
+            {/* Filter and Sort Options (Shown only when recipes are displayed) */}
+            <div className="filter-sort-container">
+              <div className="filter-buttons">
+                <button
+                  className={filterType === 'calories' ? 'active' : ''}
+                  onClick={() => setFilterType('calories')}
+                >
+                  Calories
+                </button>
+                <button
+                  className={filterType === 'time' ? 'active' : ''}
+                  onClick={() => setFilterType('time')}
+                >
+                  Time
+                </button>
+                <button
+                  className={filterType === 'quantity' ? 'active' : ''}
+                  onClick={() => setFilterType('quantity')}
+                >
+                  Ingredients
+                </button>
+              </div>
+              <div className="sort-buttons">
+                <button
+                  className={sortOrder === 'up' ? 'active' : ''}
+                  onClick={() => setSortOrder('up')}
+                >
+                  ↑ Ascending
+                </button>
+                <button
+                  className={sortOrder === 'down' ? 'active' : ''}
+                  onClick={() => setSortOrder('down')}
+                >
+                  ↓ Descending
+                </button>
+              </div>
+            </div>
+
+            {/* Display Filtered Recipes */}
+            {filteredRecipes.map(recipe => (
+              <Link to={`/recipe/${recipe.id}`} key={recipe.id} className="recipe-item-link">
+                <div className="recipe-item">
+                  <img src={recipe.image} alt={recipe.name} className="recipe-image" />
+                  <div className="recipe-details">
+                    <h2>{recipe.name}</h2>
+                    <p>Chef: {recipe.chef}</p>
+                    <p className="recipe-description">{recipe.description}</p>
+                    <div className="recipe-info">
+                      <p><strong>Calories:</strong> {recipe.calories} kcal</p>
+                      <p><strong>Time:</strong> {recipe.timeToComplete}</p>
+                    </div>
+                    <div
+                      className="match-percentage"
+                      style={{ backgroundColor: getMatchColor(recipe.matchPercentage) }}
+                    >
+                      Match: {recipe.matchPercentage.toFixed(0)}%
+                    </div>
+                    <div className="recipe-ingredients">
+                      <h3>Ingredients:</h3>
+                      <ul>
+                        {recipe.ingredients.map((ingredient, index) => (
+                          <li
+                            key={index}
+                            className={
+                              selectedIngredients.includes(ingredient.toLowerCase())
+                                ? 'ingredient-selected'
+                                : 'ingredient-not-selected'
+                            }
+                          >
+                            {ingredient}
+                            {selectedIngredients.includes(ingredient.toLowerCase()) && (
+                              <span className="underline"></span>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="recipe-rating">
+                      Rating: {'★'.repeat(Math.floor(recipe.rating))}{'☆'.repeat(5 - Math.floor(recipe.rating))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Link>
-          ))
+              </Link>
+            ))}
+          </>
         )}
       </div>
     </div>
