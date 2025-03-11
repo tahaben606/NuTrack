@@ -43,10 +43,10 @@ body{
 }
 
 .contact-btn {
-    background: #556B2F;
-    color: white;
+    background: #ffffff;
+    color: black;
     padding: 8px 16px;
-    border: none;
+    border: 3px solid #b3e858;
     cursor: pointer;
     margin-left: 20px;
     border-radius: 50px;
