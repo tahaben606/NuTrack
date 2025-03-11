@@ -15,7 +15,9 @@ const Navbar = () => {
                 </ul>
                 <div className="nav-icons">
                     <Link to="/login"><i className="fas fa-user"></i>
-                   <button className="contact-btn">LOGIN</button> </Link>
+                        <button className="contact-btn">LOGIN</button> </Link>
+                    <Link to="/signup"><button className="contact-btn">SIGNUP</button> </Link>
+                        
                 </div>
             </div>
         </nav>
