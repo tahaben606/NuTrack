@@ -95,7 +95,7 @@ const Store = () => {
     });
 
   return (
-    <div>
+    <div className='jma3a'>
       {/* Search Input */}
       <div className="input-group">
         <label className="input-group__label" htmlFor="searchInput">Add Ingredients</label>
