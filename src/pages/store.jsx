@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link for navigation
-import './store.css'; // Import the CSS file
-import Mjid from '../assets/mjid.jpg';
+"use client"
+
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Search, Filter, Clock, Flame, ChevronUp, ChevronDown, X, Utensils } from 'lucide-react';
+import './store.css';
 import recipes from './recipedata';
 
 const Store = () => {
@@ -10,14 +12,23 @@ const Store = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [filterType, setFilterType] = useState('');
   const [sortOrder, setSortOrder] = useState('');
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   // Extract all unique ingredients from recipes
   const allIngredients = [...new Set(recipes.flatMap(recipe => recipe.ingredients))];
 
   // Filter ingredients based on the search term
   const filteredIngredients = allIngredients.filter(ingredient =>
-    ingredient.toLowerCase().startsWith(searchTerm.toLowerCase())
+    ingredient.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  useEffect(() => {
+    if (searchTerm) {
+      setIsDropdownVisible(true);
+    } else {
+      setIsDropdownVisible(false);
+    }
+  }, [searchTerm]);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -26,30 +37,29 @@ const Store = () => {
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter' && searchTerm.trim() !== '') {
-      const ingredient = searchTerm.trim().toLowerCase();
-
-      if (ingredient === 'mjid') {
-        if (!selectedIngredients.includes('mjid')) {
-          setSelectedIngredients([...selectedIngredients, 'mjid']);
-        }
-      } else if (!allIngredients.includes(ingredient)) {
-        setErrorMessage(`"${ingredient}" is not a valid ingredient.`);
-        return;
-      } else if (!selectedIngredients.includes(ingredient)) {
-        setSelectedIngredients([...selectedIngredients, ingredient]);
-      }
-
-      setSearchTerm('');
-      setErrorMessage('');
+      addIngredient(searchTerm.trim());
     }
   };
 
-  const handleIngredientClick = (ingredient) => {
-    if (!selectedIngredients.includes(ingredient)) {
-      setSelectedIngredients([...selectedIngredients, ingredient]);
+  const addIngredient = (ingredient) => {
+    const normalizedIngredient = ingredient.toLowerCase();
+    
+    if (!allIngredients.some(ing => ing.toLowerCase() === normalizedIngredient)) {
+      setErrorMessage(`"${ingredient}" is not a valid ingredient.`);
+      return;
     }
+    
+    if (!selectedIngredients.includes(normalizedIngredient)) {
+      setSelectedIngredients([...selectedIngredients, normalizedIngredient]);
+    }
+    
     setSearchTerm('');
     setErrorMessage('');
+    setIsDropdownVisible(false);
+  };
+
+  const handleIngredientClick = (ingredient) => {
+    addIngredient(ingredient);
   };
 
   const removeIngredient = (ingredient) => {
@@ -58,19 +68,34 @@ const Store = () => {
 
   const getMatchPercentage = (recipeIngredients) => {
     if (selectedIngredients.length === 0) return 0;
-    const normalizedRecipeIngredients = recipeIngredients.map(ingredient => ingredient.trim().toLowerCase());
-    const matchedIngredients = selectedIngredients.filter(ingredient => normalizedRecipeIngredients.includes(ingredient)).length;
+    const normalizedRecipeIngredients = recipeIngredients.map(ingredient => ingredient.toLowerCase());
+    const matchedIngredients = selectedIngredients.filter(ingredient => 
+      normalizedRecipeIngredients.some(recipeIng => recipeIng.includes(ingredient))
+    ).length;
     return (matchedIngredients / recipeIngredients.length) * 100;
   };
 
-  const getMatchColor = (percentage) => {
-    if (percentage === 100) return '#92C7CF';
-    if (percentage >= 80) return '#95D2B3';
-    if (percentage > 60) return '#F39E60';
-    return '#FF8080';
+const getMatchColor = (percentage) => {
+  if (percentage === 100) return '#673AB7'; // Dark blue to purple
+  if (percentage >= 70) return '#4CAF50'; // Green
+  if (percentage >= 50) return '#f2e449'; // Softer Yellow
+  return '#FF5722'; // Tomato Red
+};
+
+
+
+  const toggleFilter = (type) => {
+    if (filterType === type) {
+      setFilterType('');
+    } else {
+      setFilterType(type);
+      if (!sortOrder) setSortOrder('up');
+    }
   };
 
-  const showMjidText = selectedIngredients.includes('mjid');
+  const toggleSortOrder = () => {
+    setSortOrder(sortOrder === 'up' ? 'down' : 'up');
+  };
 
   const filteredRecipes = recipes
     .map(recipe => {
@@ -95,161 +120,162 @@ const Store = () => {
     });
 
   return (
-    <div className='jma3a'>
-      {/* Search Input */}
-      <div className="input-group">
-        <label className="input-group__label" htmlFor="searchInput">Add Ingredients</label>
-        <input
-          type="text"
-          id="searchInput"
-          className="input-group__input"
-          placeholder="Type an ingredient and press Enter"
-          value={searchTerm}
-          onChange={handleSearch}
-          onKeyDown={handleKeyDown}
-        />
-      </div>
-
-      {/* Error Message */}
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
-
-      {/* Ingredients Dropdown */}
-      {searchTerm && (
-        <div className="ingredients-dropdown">
-          {filteredIngredients.map((ingredient, index) => (
-            <div
-              key={index}
-              className="ingredient-dropdown-item"
-              onClick={() => handleIngredientClick(ingredient)}
-            >
-              {ingredient}
-            </div>
-          ))}
+    <div className="store-container">
+      <div className="store-header">
+        <div className="store-logo">
+          <Utensils className="store-logo-icon" />
+          <h1>Nutrack</h1>
         </div>
-      )}
-
-      {/* Selected Ingredients */}
-      <div className="ingredients-container">
+        
+        <div className="search-container">
+          <div className="search-input-wrapper">
+            <Search className="search-icon" />
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Search for ingredients..."
+              value={searchTerm}
+              onChange={handleSearch}
+              onKeyDown={handleKeyDown}
+              onFocus={() => setIsDropdownVisible(true)}
+            />
+            {searchTerm && (
+              <button 
+                className="clear-search" 
+                onClick={() => setSearchTerm('')}
+              >
+                <X size={16} />
+              </button>
+            )}
+          </div>
+          
+          {isDropdownVisible && filteredIngredients.length > 0 && (
+            <div className="ingredients-dropdown">
+              {filteredIngredients.slice(0, 6).map((ingredient, index) => (
+                <div
+                  key={index}
+                  className="ingredient-dropdown-item"
+                  onClick={() => handleIngredientClick(ingredient)}
+                >
+                  {ingredient}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+      
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
+      
+      <div className="selected-ingredients-container">
         {selectedIngredients.map((ingredient, index) => (
           <div key={index} className="ingredient-tag">
             <span>{ingredient}</span>
-            <button onClick={() => removeIngredient(ingredient)}>×</button>
+            <button onClick={() => removeIngredient(ingredient)}>
+              <X size={14} />
+            </button>
           </div>
         ))}
       </div>
-
-      {/* Mjid Burger (Special Case) */}
-      {showMjidText && (
-        <div className="mjid">
-          <div className="recipe-item">
-            <img src={Mjid} alt="Mjid Burger" className="recipe-image" />
-            <div className="recipe-details">
-              <h2>mjid burger</h2>
-              <p>Chef: Chef mjid</p>
-              <p className="recipe-description">ahsan 5obza</p>
-              <div className="match-percentage" style={{ backgroundColor: 'blue' }}>
-                Match: 100%
-              </div>
-              <div className="recipe-rating">Rating: ★★★★★</div>
-            </div>
+      
+      {selectedIngredients.length > 0 && (
+        <div className="filter-controls">
+          <div className="filter-buttons">
+            <button 
+              className={`filter-button ${filterType === 'calories' ? 'active' : ''}`}
+              onClick={() => toggleFilter('calories')}
+            >
+              <Flame size={16} />
+              <span>Calories</span>
+            </button>
+            
+            <button 
+              className={`filter-button ${filterType === 'time' ? 'active' : ''}`}
+              onClick={() => toggleFilter('time')}
+            >
+              <Clock size={16} />
+              <span>Time</span>
+            </button>
+            
+            <button 
+              className={`filter-button ${filterType === 'quantity' ? 'active' : ''}`}
+              onClick={() => toggleFilter('quantity')}
+            >
+              <Filter size={16} />
+              <span>Ingredients</span>
+            </button>
+            
+            {filterType && (
+              <button 
+                className="sort-button"
+                onClick={toggleSortOrder}
+              >
+                {sortOrder === 'up' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+              </button>
+            )}
           </div>
         </div>
       )}
-
-      {/* Recipe List */}
-      <div>
+      
+      <div className="recipes-container">
         {selectedIngredients.length === 0 ? (
           <div className="default-view">
-            <h1>what's in the fridge?</h1>
-            {/* <img src={sonic} alt="What's in the fridge?" className="default-image" /> */}
+            <div className="default-icon">
+              <Utensils size={48} />
+            </div>
+            <h2>What's in your fridge?</h2>
+            <p>Add ingredients to find matching recipes</p>
           </div>
         ) : (
-          <>
-            {/* Filter and Sort Options (Shown only when recipes are displayed) */}
-            <div className="filter-sort-container">
-              <div className="filter-buttons">
-                <button
-                  className={filterType === 'calories' ? 'active' : ''}
-                  onClick={() => setFilterType('calories')}
-                >
-                  Calories
-                </button>
-                <button
-                  className={filterType === 'time' ? 'active' : ''}
-                  onClick={() => setFilterType('time')}
-                >
-                  Time
-                </button>
-                <button
-                  className={filterType === 'quantity' ? 'active' : ''}
-                  onClick={() => setFilterType('quantity')}
-                >
-                  Ingredients
-                </button>
-              </div>
-              <div className="sort-buttons">
-                <button
-                  className={sortOrder === 'up' ? 'active' : ''}
-                  onClick={() => setSortOrder('up')}
-                >
-                  ↑ Ascending
-                </button>
-                <button
-                  className={sortOrder === 'down' ? 'active' : ''}
-                  onClick={() => setSortOrder('down')}
-                >
-                  ↓ Descending
-                </button>
-              </div>
-            </div>
-
-            {/* Display Filtered Recipes */}
-            {filteredRecipes.map(recipe => (
-              <Link to={`/recipe/${recipe.id}`} key={recipe.id} className="recipe-item-link">
-                <div className="recipe-item">
-                  <img src={recipe.image} alt={recipe.name} className="recipe-image" />
-                  <div className="recipe-details">
-                    <h2>{recipe.name}</h2>
-                    <p>Chef: {recipe.chef}</p>
-                    <p className="recipe-description">{recipe.description}</p>
-                    <div className="recipe-info">
-                      <p><strong>Calories:</strong> {recipe.calories} kcal</p>
-                      <p><strong>Time:</strong> {recipe.timeToComplete}</p>
-                    </div>
-                    <div
-                      className="match-percentage"
+          filteredRecipes.length > 0 ? (
+            filteredRecipes.map(recipe => (
+              <Link to={`/recipe/${recipe.id}`} key={recipe.id} className="recipe-card-link">
+                <div className="recipe-card">
+                  <div className="recipe-image-container">
+                    <img src={recipe.image || "/placeholder.svg"} alt={recipe.name} className="recipe-image" />
+                    <div 
+                      className="match-badge"
                       style={{ backgroundColor: getMatchColor(recipe.matchPercentage) }}
                     >
-                      Match: {recipe.matchPercentage.toFixed(0)}%
+                      {recipe.matchPercentage.toFixed(0)}% Match
                     </div>
-                    <div className="recipe-ingredients">
-                      <h3>Ingredients:</h3>
-                      <ul>
-                        {recipe.ingredients.map((ingredient, index) => (
-                          <li
-                            key={index}
-                            className={
-                              selectedIngredients.includes(ingredient.toLowerCase())
-                                ? 'ingredient-selected'
-                                : 'ingredient-not-selected'
-                            }
-                          >
-                            {ingredient}
-                            {selectedIngredients.includes(ingredient.toLowerCase()) && (
-                              <span className="underline"></span>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
+                  </div>
+                  
+                  <div className="recipe-content">
+                    <h3 className="recipe-title">{recipe.name}</h3>
+                    <p className="recipe-chef">By {recipe.chef}</p>
+                    
+                    <div className="recipe-meta">
+                      <div className="recipe-meta-item">
+                        <Flame size={16} className="recipe-meta-icon" />
+                        <span>{recipe.calories} kcal</span>
+                      </div>
+                      <div className="recipe-meta-item">
+                        <Clock size={16} className="recipe-meta-icon" />
+                        <span>{recipe.timeToComplete}</span>
+                      </div>
                     </div>
+                    
                     <div className="recipe-rating">
-                      Rating: {'★'.repeat(Math.floor(recipe.rating))}{'☆'.repeat(5 - Math.floor(recipe.rating))}
+                      {'★'.repeat(Math.floor(recipe.rating))}
+                      {'☆'.repeat(5 - Math.floor(recipe.rating))}
+                    </div>
+                    
+                    <div className="recipe-ingredients-preview">
+                      <p>Ingredients: {recipe.ingredients.slice(0, 3).join(', ')}
+                      {recipe.ingredients.length > 3 ? ` +${recipe.ingredients.length - 3} more` : ''}
+                      </p>
                     </div>
                   </div>
                 </div>
               </Link>
-            ))}
-          </>
+            ))
+          ) : (
+            <div className="no-results">
+              <p>No recipes found with your ingredients</p>
+              <p>Try adding different ingredients</p>
+            </div>
+          )
         )}
       </div>
     </div>
