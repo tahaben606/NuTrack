@@ -14,10 +14,13 @@
     z-index: 1000;
 }
 
-/* Navbar when scrolled */
 .navbar.scrolled {
     background: #222;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+.navbar.scrolled .nav-links a {
+    color: white;
 }
 
 /* Navbar on non-home pages */
@@ -71,7 +74,7 @@
 }
 
 .nav-links a:hover {
-    color: #f0a500;
+    color: #1b5a13;
 }
 
 /* Pushes login/signup to the right */
@@ -85,7 +88,7 @@
 
 /* Buttons */
 .contact-btn {
-    background-color: #f0a500;
+    background-color: rgb(12, 76, 24);
     border: none;
     padding: 8px 15px;
     color: white;
@@ -97,5 +100,5 @@
 }
 
 .contact-btn:hover {
-    background-color: #d48800;
+    background-color: rgb(71, 121, 60);
 }

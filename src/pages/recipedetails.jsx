@@ -19,12 +19,12 @@ const RecipeDetails = () => {
     );
   }
 
-  const defaultImage = "https://via.placeholder.com/150"; // Default image if recipe image is missing
+  const defaultImage = "https://www.futurity.org/wp/wp-content/uploads/2014/04/Photo-Missing-1600.jpg"; // Default image if recipe image is missing
 
   return (
     <div className="recipe-details-weird-container">
       <div className='top-form'>
-        <button className="return-button" onClick={() => navigate('/store')}>
+        <button className="return-button" onClick={() => navigate(navigate[-1])}>
           Return to Store
         </button>
         <h1 className='name'>{recipe.name || 'Recipe name is missing'}</h1>
